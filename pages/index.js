@@ -1,8 +1,9 @@
 // pages/index.js
 import React from 'react';
 import { Container, Typography } from '@mui/material';
-import PantryForm from '../components/PantryForm';
-import PantryList from '../components/PantryList';
+import PantryForm from '../components/pantryform';
+import PantryList from '../components/pantrylist';
+
 
 export default function Home() {
   return (
