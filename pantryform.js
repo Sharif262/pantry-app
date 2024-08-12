@@ -1,7 +1,7 @@
 // components/PantryForm.js
 import React, { useState } from 'react';
 import { TextField, Button, Grid } from '@mui/material';
-import { collection, addDoc, deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 import { db } from '../firebase';
 
 function PantryForm() {
@@ -9,18 +9,13 @@ function PantryForm() {
   const [quantity, setQuantity] = useState('');
 
   const addItem = async () => {
-    await addDoc(collection(db, "pantry"), { itemName, quantity });
-    setItemName('');
-    setQuantity('');
-  };
-
-  const updateItem = async (id) => {
-    const itemRef = doc(db, "pantry", id);
-    await updateDoc(itemRef, { itemName, quantity });
-  };
-
-  const deleteItem = async (id) => {
-    await deleteDoc(doc(db, "pantry", id));
+    if (itemName && quantity) {
+      await addDoc(collection(db, "pantry"), { itemName, quantity });
+      setItemName('');
+      setQuantity('');
+    } else {
+      alert("Please enter both item name and quantity");
+    }
   };
 
   return (
@@ -42,7 +37,9 @@ function PantryForm() {
         />
       </Grid>
       <Grid item xs={3}>
-        <Button variant="contained" onClick={addItem}>Add Item</Button>
+        <Button variant="contained" color="primary" onClick={addItem}>
+          Add Item
+        </Button>
       </Grid>
     </Grid>
   );

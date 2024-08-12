@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { collection, query, onSnapshot } from "firebase/firestore";
 import { db } from '../firebase';
-import { TextField, List, ListItem, ListItemText } from '@mui/material';
+import { TextField, List, ListItem, ListItemText, IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function PantryList() {
   const [pantryItems, setPantryItems] = useState([]);
@@ -24,6 +25,10 @@ function PantryList() {
     item.itemName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const deleteItem = async (id) => {
+    await deleteDoc(doc(db, "pantry", id));
+  };
+
   return (
     <div>
       <TextField 
@@ -34,7 +39,11 @@ function PantryList() {
       />
       <List>
         {filteredItems.map(item => (
-          <ListItem key={item.id}>
+          <ListItem key={item.id} secondaryAction={
+            <IconButton edge="end" aria-label="delete" onClick={() => deleteItem(item.id)}>
+              <DeleteIcon />
+            </IconButton>
+          }>
             <ListItemText primary={`${item.itemName} - ${item.quantity}`} />
           </ListItem>
         ))}
